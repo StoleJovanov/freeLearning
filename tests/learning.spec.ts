@@ -258,19 +258,22 @@ test('list and dropdowns', async({page}) => {
     await expect(header).toHaveCSS('background-color', 'rgb(50, 50, 89)')  //CSS Property is background-color
 
     const colors = {
-        "Light": "rgb(255, 255, 255)",
-        "Dark": "rgb(34, 43, 69)",
-        "Cosmic": "rgb(50, 50, 89)",
-        "Corporate": "rgb(255, 255, 255)"
-    }
-    await dropDownMenu.click()
-    for(const color in colors){
-        await optionList.filter({hasText: color}).click()
-        await expect(header).toHaveCSS('background-color', colors[color])
-        //at the end of our loop let's make our loop closed 
-         if(color != "Corporate")
-           await dropDownMenu.click()
-    }    
+        Light: 'rgb(255, 255, 255)',
+        Dark: 'rgb(0, 0, 0)',
+        Cosmic: 'rgb(42, 42, 42)',
+        Corporate: 'rgb(100, 100, 100)'
+      };
+      
+      await dropDownMenu.click();
+      for (const color in colors) {
+        const theme = color as keyof typeof colors;  // ✅ tell TypeScript this is a valid key
+        await optionList.filter({ hasText: color }).click();
+        await expect(header).toHaveCSS('background-color', colors[theme]);
+      
+        if (color !== 'Corporate') {
+          await dropDownMenu.click();
+        }
+      }      
 })
 
 //Tooltips
